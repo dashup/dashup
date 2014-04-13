@@ -1,0 +1,35 @@
+{
+  "name": "dashub",
+  "version": "0.0.0",
+  "description": "A dashboard combining streams for multiple GitHub projects.",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nikku/dashub"
+  },
+  "keywords": [
+    "GitHub",
+    "activity",
+    "stream",
+    "events",
+    "dashboard",
+    "project",
+    "management"
+  ],
+  "author": "Nico Rehwaldt <git_nikku@nixis.de>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Nikku/dashub/issues"
+  },
+  "homepage": "https://github.com/Nikku/dashub",
+  "dependencies": {
+    "github": "^0.1.16",
+    "mkdirp": "^0.3.5",
+    "lodash": "^2.4.1",
+    "elasticsearch": "^2.1.2",
+    "minimatch": "^0.2.14"
+  }
+}
