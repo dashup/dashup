@@ -1,0 +1,151 @@
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.footer {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+}
+.header h3 {
+  padding-bottom: 19px;
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+}
+
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* Customize container */
+@media (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+}
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  .header,
+  .footer {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}
+
+.events {
+  position: relative;
+  margin-left: 100px;
+}
+
+.events-timeline:before {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 15px;
+  bottom: 15px;
+  left: 24px;
+  width: 2px;
+  background-color: #F3F3F3;
+  z-index: -1;
+}
+
+.events-timeline .marker {
+  position: absolute;
+  top: 0;
+  left: -50px;
+
+  display: block;
+
+  font-size: 20px;
+  line-height: 34px;
+  
+  width: 40px;
+  height: 40px;
+  border: solid 3px #FFF;
+  border-radius: 30px;
+  
+  background-color: #F3F3F3;
+  text-align: center;
+}
+
+.events-timeline .repo {
+  position: absolute;
+  left: -260px;
+  text-align: right;
+  top: 0;
+  line-height: 40px;
+  width: 200px;
+}
+
+.events-timeline .repo a:link {
+  text-decoration: none;
+}
+
+.marker.icon-close {
+  background-color: #BD2C00;
+}
+
+.marker.icon-open {
+  background-color: #6CC644;
+}
+
+.marker.icon-close, 
+.marker.icon-open {
+  color: white;
+}
+
+.events-timeline .event, 
+.events-timeline .date {
+  position: relative;
+  margin: 0 0 20px 55px;
+}
+
+.events-timeline .date:not(:first-child) {
+  margin-top: 100px;
+}
+
+.events .message {
+  line-height: 40px;
+}
+
+.events .details {
+  margin-left: 10px;
+}
+
+.events .event {
+  margin-bottom: 30px;
+}
+
+.events .event:first-child .date {
+  margin-top: 0;
+}
+
+.user img {
+  width: 18px;
+  height: 18px;
+  border-radius: 3px
+}
