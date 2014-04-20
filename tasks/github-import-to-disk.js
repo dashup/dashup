@@ -28,7 +28,7 @@ function dataLoaded(element, source, sync, result) {
   if (meta.status == '304 Not Modified') {
     console.log('not modified');
   } else {
-    var name = 'data/events-' + source + '-' + element.id + '-' + sync.count + '.json';
+    var name = 'data/events-' + element.id + '-' + source + '-' + sync.count + '.json';
 
     console.log('update, dumping result to', name);
     Data.dump(result.data, name);
