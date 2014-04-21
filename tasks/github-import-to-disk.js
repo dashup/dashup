@@ -12,6 +12,12 @@ var datasource = new DataSource(github),
     importer = new Importer(datasource);
 
 
+var streamName = process.argv[2];
+if (!streamName) {
+  throw new Error('usage: script streamName');
+}
+
+
 function dataLoaded(element, source, sync, result) {
 
   console.log('data loaded', element.id, source);
@@ -39,10 +45,10 @@ function dataLoaded(element, source, sync, result) {
 ////// do stuff ///////////////////////////////////
 
 
-var repositories = config.get('track.repositories', []);
-var organizations = config.get('track.organizations', []);
+var repositories = config.get('streams.' + streamName + '.track.repositories', []);
+var organizations = config.get('streams.' + streamName + '.track.organizations', []);
 
-var sync = config.get('track.sync', {});
+var sync = config.get('sync.' + streamName, {});
 
 
 // repository config

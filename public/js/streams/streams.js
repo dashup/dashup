@@ -9,24 +9,28 @@
 
     var streams = {};
 
-    this.register = function(name, config) {
-      streams[name] = { config: config };
-    };
+    this.$get = [ 'streamFactory', function(streamFactory) {
 
-    this.$get = [ 'esFactory', function(esFactory) {
+      function createStream(id) {
+        var stream = streamFactory({ id: id });
 
-      function getStream(name) {
-        var stream = streams[name];
+        stream.on('destroy', function() {
+          delete streams[id];
+        });
+
+        streams[id] = stream;
+
+        return stream;
+      }
+
+      function getStream(id) {
+        var stream = streams[id];
 
         if (!stream) {
-          throw new Error('no stream <' + name + '> configured');
+          stream = createStream(id);
         }
 
-        if (!stream.instance) {
-          stream.instance = esFactory(stream.config);
-        }
-
-        return stream.instance;
+        return stream;
       }
 
       return {
@@ -43,5 +47,61 @@
       };
     }];
   });
+
+  module.factory('streamFactory', ['$http', '$q', function($http, $q) {
+
+    function Stream(config) {
+
+      var baseUrl = '/stream/' + config.id;
+
+      var listeners = {};
+
+      this.id = config.id;
+
+      this.destroy = function() {
+        this.emit('destroy');
+      };
+
+      this.on = function(event, fn) {
+        var queue = (listeners[event] = listeners[event] || []);
+        queue.push(fn);
+      };
+
+      this.emit = function() {
+        var args = Array.prototype.slice.call(arguments),
+            event = args.shift();
+
+        (listeners[event] || []).forEach(function(fn) {
+          fn.apply(null, args);
+        });
+      };
+
+      this.search = function(filter) {
+
+        var deferred = $q.defer();
+
+        var params = [];
+
+        angular.forEach(filter, function(v, k) {
+          params.push(k + '=' + encodeUriComponent(v));
+        });
+
+        var paramStr = params.sort().join('&');
+
+        $http.get(baseUrl + (paramStr ? '?' + paramStr : '')).then(function(response) {
+          deferred.resolve(response.data);
+        }, function(err) {
+          deferred.reject(err);
+        });
+
+        return deferred.promise;
+      };
+    }
+
+    return function(config) {
+      return new Stream(config);
+    };
+
+  }]);
 
 })(window.angular);

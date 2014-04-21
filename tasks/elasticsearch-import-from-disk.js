@@ -9,7 +9,10 @@ var config = require('../lib/config'),
 
 var es = elastic.createClient();
 
-var indexName = 'dashub';
+var streamName = process.argv[2];
+if (!streamName) {
+  throw new Error('usage: script streamName');
+}
 
 
 function importToElasicSearch(elements, type, done) {
@@ -89,14 +92,14 @@ function done(type) {
   }
 }
 
-importFiles(match('events-org-*.json'), { index: indexName, type: 'event-org' }, function(err) {
+importFiles(match('events-org-*.json'), { index: streamName, type: 'event-org' }, function(err) {
   done('events-org');
 });
 
-importFiles(match('events-repo-*-base-*.json'), { index: indexName, type: 'event-repo' }, function(err) {
+importFiles(match('events-repo-*-base-*.json'), { index: streamName, type: 'event-repo' }, function(err) {
   done('events-repo');
 });
 
-importFiles(match('events-repo-*-issues-*.json'), { index: indexName, type: 'event-repo-issue' }, function(err) {
+importFiles(match('events-repo-*-issues-*.json'), { index: streamName, type: 'event-repo-issue' }, function(err) {
   done('events-repo-issue');
 });

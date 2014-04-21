@@ -1,16 +1,31 @@
-<h1>whazzup</h1>
+<h1>whazzup on <a href="/s/{{ stream.id }}">#{{stream.id}}</a></h1>
 
-<div class="events" ng-hide="error">
+
+<div class="events" ng-show="loading">
 
   <div class="events-timeline">
-    <div class="date" ng-repeat-start="event in results.hits.hits"ng-show="differentDate(event, results.hits.hits[$index - 1])">
-      <span class="marker icon-time"></span>
-      <div class="message">{{ event._source.created_at | fromNow }}</div>
+    <div class="date">
+      <span class="marker icon-loading animate-spin"></span>
+      <div class="message">loading stream ...</div>
     </div>
-    <div class="event" dh-event data="event._source" ng-repeat-end></div>
   </div>
 </div>
 
-<pre ng-show="error">{{ error | json }}</pre>
+<div class="events" ng-show="streamData">
 
-<span>total hits {{ results.hits.total }}</span>
+  <div class="events-timeline">
+    <div class="date" ng-repeat-start="event in streamData.events"ng-show="differentDate(event, streamData.events[$index - 1])">
+      <span class="marker icon-time"></span>
+      <div class="message">{{ event.created_at | fromNow }}</div>
+    </div>
+    <div class="event" dh-event data="event" ng-repeat-end></div>
+  </div>
+</div>
+
+<div class="summary" ng-show="streamData">
+  <span>displaying {{ streamData.events.length }} / {{ streamData.total }} events</span>
+</div>
+
+<div class="error" ng-show="error">
+  {{ error.status }} - {{ error.message }}
+</div>

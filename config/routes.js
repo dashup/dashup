@@ -2,6 +2,6 @@ module.exports = function(app) {
 
   var stream = require('../lib/controllers/stream');
 
-  app.get('/s', stream.list);
-  app.post('/s', stream.list);
+  app.get('/stream/:id', stream.query);
+  app.get('/stream/:id/sync', stream.sync);
 };

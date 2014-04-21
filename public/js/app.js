@@ -1,12 +1,9 @@
 (function(angular) {
 
-  var app = angular.module('dashub', [ 'dashub.streams', 'elasticsearch' ]);
+  var app = angular.module('dashub', [ 'ngRoute', 'dashub.streams', 'dashub.about', 'dashub.home' ]);
 
-  app.config(function(StreamsProvider) {
-
-    StreamsProvider.register('bpmn-io', {
-      host: 'localhost:9200'
-    });
-  });
+  app.config(['$locationProvider', function($locationProvider) {
+    $locationProvider.html5Mode(true);
+  }]);
 
 })(window.angular);

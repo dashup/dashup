@@ -11,51 +11,66 @@
         return true;
       }
 
-      return moment(a._source.created_at).fromNow() !==
-             moment(b._source.created_at).fromNow();
+      return moment(a.created_at).fromNow() !==
+             moment(b.created_at).fromNow();
     };
 
-    this.initStream = function(name) {
-      stream = Streams.get(name);
+    this.initStream = function(id) {
+      if (!id) {
+        throw new Error('no activity stream id given');
+      }
+
+      $scope.stream = stream = Streams.get(id);
       $scope.$emit('stream.init', stream);
     };
 
     function loadResults(results) {
-      console.log(arguments);
-      $scope.results = results;
+      $scope.loading = false;
+      $scope.streamData = results;
     }
 
     function handleError(error) {
-      $scope.error = error;
+      $scope.loading = false;
+
+      $scope.error = {
+        status: error.status,
+        message: error.data && error.data.message ? error.data.message : error.data
+      };
     }
 
-    $scope.$on('stream.init', function(e, stream) {
+    function reload() {
+      $scope.loading = true;
+      $scope.error = false;
+      
+      stream.search($scope.filter).then(loadResults, handleError);
+    }
 
-      stream.search({
-        index: 'dashub',
-        type: 'event-repo',
-        size: '100',
-        body: {
-          query: {
-            match_all: {}
-          },
-          sort: [
-            { created_at: { order: 'desc' } },
-          ]
-        }
-      }).then(loadResults, handleError);
+    // supported filters
+    // 
+    // fromDate, toDate, text, repo
+    $scope.filter = {};
+
+    $scope.$on('stream.init', function(e, stream) {
+      reload();
+    });
+
+    $scope.$on('$destroy', function() {
+      if (stream) {
+        stream.destroy();
+      }
     });
   }
 
   module.directive('dhActivityStream', function() {
     return {
       scope: {
-        name: '@'
+        streamId: '='
       },
       controller: ActivityStreamController,
       templateUrl: 'js/streams/activityStream.html',
       link: function(scope, element, attrs, controller) {
-        controller.initStream(scope.name);
+        console.log(scope);
+        controller.initStream(scope.streamId);
       }
     };
   });

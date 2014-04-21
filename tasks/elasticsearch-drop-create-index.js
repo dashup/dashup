@@ -5,7 +5,10 @@ var config = require('../lib/config'),
 
 var es = elastic.createClient();
 
-var indexName = 'dashub';
+var streamName = process.argv[2];
+if (!streamName) {
+  throw new Error('usage: script streamName');
+}
 
 
 function dropIndex(index, done) {
@@ -28,20 +31,19 @@ function createIndex(index, mappings, done) {
 }
 
 
-console.log('dropping index', indexName);
+console.log('dropping index', streamName);
 
-dropIndex(indexName, function(err) {
+dropIndex(streamName, function(err) {
 
   if (err) {
     console.error('failed to drop', err);
-    return es.close();
+  } else {
+    console.log('dropped');
   }
 
-  console.log('dropped');
+  console.log('creating index', streamName);
 
-  console.log('creating index', indexName);
-
-  createIndex(indexName, {
+  createIndex(streamName, {
     'event-repo-issue': {
       'properties' : {
         'created_at' : { 'type' : 'date_time' }
