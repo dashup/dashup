@@ -38,6 +38,12 @@ body {
   margin: 30px 0;
 }
 
+@media (min-width: 992px) {
+  .container {
+    max-width: 930px;
+  }
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   .header,
@@ -58,19 +64,19 @@ body {
 
 .events {
   position: relative;
-  margin-left: 100px;
+  margin-left: 150px;
 }
 
 .events-timeline:before {
   display: block;
   content: "";
   position: absolute;
+  background-color: #F3F3F3;
+  z-index: -1;
   top: 15px;
   bottom: 15px;
   left: 24px;
   width: 2px;
-  background-color: #F3F3F3;
-  z-index: -1;
 }
 
 .events-timeline .marker {
@@ -101,8 +107,17 @@ body {
   width: 200px;
 }
 
-.events-timeline .repo a:link {
+.events-timeline .repo a:not(:hover) {
   text-decoration: none;
+  color: inherit;
+}
+
+.marker.icon-close {
+  font-size: 19px;
+}
+
+.marker.icon-open {
+  font-size: 16px;
 }
 
 .marker.icon-close {
@@ -133,7 +148,10 @@ body {
 }
 
 .events .details {
-  margin-left: 10px;
+  margin-left: 20px;
+  margin-top: 5px;
+
+  position: relative;
 }
 
 .events .event {
@@ -148,4 +166,66 @@ body {
   width: 18px;
   height: 18px;
   border-radius: 3px
+}
+
+.commits {
+  padding: 0;
+  list-style: none;
+}
+
+.commit {
+  font-family: Monaco, "Liberation Mono", Courier, monospace;
+  margin-bottom: 2px;
+}
+
+.commit .sha {
+  float: right;
+  margin-left: 20px;
+}
+
+.commit a:not(:hover) {
+  color: inherit;
+}
+
+.commit a.sha:not(:hover) {
+  color: #CCC;
+}
+
+.commit .icon-commit {
+  background: #F6F6F6;
+  display: inline-block;
+  padding: 0 5px;
+  border-radius: 4px;
+
+  margin-right: 2px;
+}
+
+a[dh-expander] {
+  color: #FFF;
+  background: #E6E6E6;
+  line-height: 10px;
+  display: inline-block;
+  padding: 0 3px;
+  border-radius: 2px;
+  margin-left: 5px;
+}
+
+a[dh-expander]:hover {
+  background: #428BCA;
+}
+
+.comment {
+  margin: 5px 10px;
+}
+
+.comment:before {
+  display: block;
+  content: "";
+  position: absolute;
+  background-color: #C3C3C3;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
 }

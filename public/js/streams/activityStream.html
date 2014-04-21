@@ -1,8 +1,6 @@
-<h1>Activity Stream for bpmn-io</h1>
+<h1>whazzup</h1>
 
-<span>total hits {{ results.hits.total }}</span>
-
-<div class="events">
+<div class="events" ng-hide="error">
 
   <div class="events-timeline">
     <div class="date" ng-repeat-start="event in results.hits.hits"ng-show="differentDate(event, results.hits.hits[$index - 1])">
@@ -14,3 +12,5 @@
 </div>
 
 <pre ng-show="error">{{ error | json }}</pre>
+
+<span>total hits {{ results.hits.total }}</span>

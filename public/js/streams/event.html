@@ -13,9 +13,9 @@
     <span class="repo" dh-repo data="event.repo"></span>
     
     <div class="details">
-      <ul>
+      <ul class="commits">
         <li ng-repeat="commit in event.payload.commits" ng-show="commit.distinct">
-          <div dh-commit data="commit"></div>
+          <div class="commit" dh-commit data="commit" repo="event.repo"></div>
         </li>
       </ul>
     </div>
@@ -28,12 +28,13 @@
     <div class="message">
       <span dh-user data="event.actor"></span> commented on
       <span dh-issue data="event.payload.issue"></span>
+      <a title="show comment" href="{{ event.payload.comment.html_url }}" dh-expander></a>
     </div>
 
     <span class="repo" dh-repo data="event.repo"></span>
 
-    <div class="details">
-      <div dh-comment data="event.payload.comment"></div>
+    <div class="details hidden">
+      <div class="comment" dh-comment data="event.payload.comment"></div>
     </div>
   </div>
 
@@ -59,7 +60,7 @@
       <span dh-user data="event.actor"></span> added team <span dh-team data="event.payload.team"></span>
     </div>
 
-    <span class="repo" dh-repo data="event.payload.repository"></span>
+    <span class="repo" dh-repo data="event.repo"></span>
   </div>
 
   <div ng-switch-when="ForkEvent">
@@ -71,7 +72,8 @@
   </div>
 
   <div ng-switch-when="CreateEvent">
-
+    <span class="marker icon-general"></span>
+    
     <div class="message">
       <span dh-user data="event.actor"></span> created <span dh-repo data="event.repo"></span>
     </div>

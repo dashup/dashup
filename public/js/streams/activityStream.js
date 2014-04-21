@@ -145,7 +145,8 @@
   module.directive('dhCommit', function() {
     return {
       scope: {
-        commit: '=data'
+        commit: '=data',
+        repo: '=repo'
       },
       templateUrl: 'js/streams/commit.html',
 
@@ -160,6 +161,22 @@
         }
 
         commit.shortMessage = shortMessage;
+        commit.shortSha = commit.sha.slice(0, 8);
+      }
+    };
+  });
+
+  module.directive('dhExpander', function() {
+    return {
+      templateUrl: 'js/streams/expander.html',
+
+      link: function(scope, element, attrs) {
+
+        element.on('click', function(e) {
+          e.preventDefault();
+          
+          angular.element(this).parents('.event').find('.details').toggleClass('hidden');
+        });
       }
     };
   });
