@@ -3,8 +3,9 @@ var express = require('express');
 module.exports = function(app, config) {
   
   app.configure(function () {
-
+    
     app.set('port', config.port);
+    app.set('env', config.envname);
     app.set('hostname', config.hostname);
 
     if (config.debug) {

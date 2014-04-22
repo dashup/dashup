@@ -1,39 +1,98 @@
-var path = require('path'),
-    rootPath = path.normalize(__dirname + '/..'),
-    env = process.env.NODE_ENV || 'development';
+var _ = require('lodash'),
+    path = require('path'),
+    rootPath = path.normalize(__dirname + '/..');
 
+function env(str) {
+  return process.env[str];
+}
 
-var environments = {
-
-  development: {
-    root: rootPath,
-    app: {
-      name: 'dashub'
-    },
-    port: 3000
+var defaults = {
+  root: rootPath,
+  app: {
+    name: 'dashub'
   },
-
-  test: {
-    root: rootPath,
-    app: {
-      name: 'dashub'
-    },
-    port: 3000
-  },
-
-  production: {
-    root: rootPath,
-    app: {
-      name: 'dashub'
-    },
-    port: 3000
+  port: 3000,
+  hostname: '127.0.0.1',
+  db: {
+    name: 'dashub'
   }
 };
 
-var environment = environments[env];
+
+function withDefaults(options) {
+  return _.merge({}, defaults, options);
+}
+
+var environments = {
+
+  development: withDefaults({
+    db: {
+      dialect: 'sqlite',
+      storage: 'tmp/db/development.sqlite'
+    }
+  }),
+
+  test: withDefaults({
+    db: {
+      dialect: 'sqlite',
+      storage: 'tmp/db/test.sqlite'
+    }
+  }),
+
+  test_mysql: withDefaults({
+    db: {
+      dialect: 'mysql',
+      name: 'dashub_test',
+      host: env('MYSQL_DB_HOST'),
+      port: env('MYSQL_DB_PORT'),
+      user: env('MYSQL_USER'),
+      password: env('MYSQL_PASSWORD')
+    }
+  }),
+
+  production: withDefaults({
+    db: {
+      logging: false,
+      dialect: 'mysql',
+      name: 'dashub',
+      host: env('MYSQL_DB_HOST'),
+      port: env('MYSQL_DB_PORT'),
+      user: env('MYSQL_DB_USERNAME'),
+      password: env('MYSQL_DB_PASSWORD')
+    }
+  }),
+
+  openshift: withDefaults({
+    hostname: env('OPENSHIFT_NODEJS_IP') || '127.0.0.1',
+    port: env('OPENSHIFT_NODEJS_PORT') || 8080,
+    db: {
+      logging: false,
+      dialect: 'mysql',
+      name: 'app',
+      host: env('OPENSHIFT_MYSQL_DB_HOST'),
+      port: env('OPENSHIFT_MYSQL_DB_PORT'),
+      user: env('OPENSHIFT_MYSQL_DB_USERNAME'),
+      password: env('OPENSHIFT_MYSQL_DB_PASSWORD')
+    }
+  })
+};
+
+var envname = env('NODE_ENV') || 'development';
+
+var environment = environments[envname];
 
 if (!environment) {
-  throw new Error('no configuration for environment ' + env);
+  throw new Error('no configuration for environment ' + envname);
+}
+
+environment.envname = envname;
+
+// create directory for database files (if specified)
+if (environment.db && environment.db.storage) {
+  var mkdirp = require('mkdirp'),
+      path = require('path');
+
+  mkdirp.sync(path.dirname(environment.db.storage));
 }
 
 module.exports = environment;
