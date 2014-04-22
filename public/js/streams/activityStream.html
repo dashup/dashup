@@ -1,4 +1,11 @@
-<h1>whazzup on <a href="/s/{{ stream.id }}">#{{stream.id}}</a></h1>
+<h1>
+  whazzup on <a href="/s/{{ stream.id }}">#{{stream.id}}</a>
+  <span class="controls">
+    <button class="btn btn-default" ng-click="syncStream()" ng-disabled="synchronizing">
+      <span class="icon-sync" ng-class="{ 'animate-spin': synchronizing }"></span>
+    </button>
+  </span>
+</h1>
 
 
 <div class="events" ng-show="loading">

@@ -15,6 +15,20 @@
              moment(b.created_at).fromNow();
     };
 
+    $scope.syncStream = function() {
+      if ($scope.synchronizing) {
+        return;
+      }
+      
+      $scope.synchronizing = true;
+
+      stream.sync().then(function() {
+        $scope.synchronizing = false;
+      }, function() {
+        $scope.synchronizing = false;
+      });
+    };
+
     this.initStream = function(id) {
       if (!id) {
         throw new Error('no activity stream id given');

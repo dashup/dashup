@@ -76,6 +76,18 @@
         });
       };
 
+      this.sync = function() {
+        var deferred = $q.defer();
+
+        $http.post(baseUrl + '/sync').then(function(data) {
+          deferred.resolve(data);
+        }, function(response) {
+          deferred.reject({ status: response.status, data: response.data });
+        });
+
+        return deferred.promise;
+      };
+
       this.search = function(filter) {
 
         var deferred = $q.defer();
