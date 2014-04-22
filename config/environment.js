@@ -15,6 +15,14 @@ var defaults = {
   hostname: '127.0.0.1',
   db: {
     name: 'dashub'
+  },
+  elasticsearch: {
+    client: {
+      host: 'localhost:9200',
+      log: {
+        level: 'warning'
+      }
+    }
   }
 };
 
@@ -73,6 +81,11 @@ var environments = {
       port: env('OPENSHIFT_MYSQL_DB_PORT'),
       user: env('OPENSHIFT_MYSQL_DB_USERNAME'),
       password: env('OPENSHIFT_MYSQL_DB_PASSWORD')
+    },
+    elasticsearch: {
+      client: {
+        host: env('OPENSHIFT_ES_IP') + ':' + env('OPENSHIFT_ES_PORT'),
+      }
     }
   })
 };
