@@ -9,12 +9,12 @@ function env(str) {
 var defaults = {
   root: rootPath,
   app: {
-    name: 'dashub'
+    name: 'dashup'
   },
   port: 3000,
   hostname: '127.0.0.1',
   db: {
-    name: 'dashub'
+    name: 'dashup'
   },
   elasticsearch: {
     client: {
@@ -50,7 +50,7 @@ var environments = {
   test_mysql: withDefaults({
     db: {
       dialect: 'mysql',
-      name: 'dashub_test',
+      name: 'dashup_test',
       host: env('MYSQL_DB_HOST'),
       port: env('MYSQL_DB_PORT'),
       user: env('MYSQL_USER'),
@@ -62,7 +62,7 @@ var environments = {
     db: {
       logging: false,
       dialect: 'mysql',
-      name: 'dashub',
+      name: 'dashup',
       host: env('MYSQL_DB_HOST'),
       port: env('MYSQL_DB_PORT'),
       user: env('MYSQL_DB_USERNAME'),

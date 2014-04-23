@@ -1,5 +1,5 @@
 {
-  "name": "dashub",
+  "name": "dashup",
   "version": "0.0.0",
   "description": "A dashboard combining streams for multiple GitHub projects",
   "main": "app.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Nikku/dashub"
+    "url": "https://github.com/Nikku/dashup"
   },
   "keywords": [
     "GitHub",
@@ -22,15 +22,15 @@
   "author": "Nico Rehwaldt <git_nikku@nixis.de>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Nikku/dashub/issues"
+    "url": "https://github.com/dashup/dashup/issues"
   },
-  "homepage": "https://github.com/Nikku/dashub",
+  "homepage": "https://github.com/dashup/dashup",
   "devDependencies": {
     "grunt": "~0.4.0",
     "grunt-develop": "~0.2.0",
     "grunt-contrib-watch": "~0.5.0",
     "grunt-jasmine-node": "~0.2.0",
-    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-copy": "^0.5.0",
     "time-grunt": "~0.3.0",
     "load-grunt-tasks": "~0.4.0",
     "request": "~2.34.0"

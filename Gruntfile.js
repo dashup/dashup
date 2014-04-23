@@ -1,15 +1,9 @@
-'use strict';
-
-var request = require('request'),
-    path = require('path');
-
-
 module.exports = function (grunt) {
   
   require('time-grunt')(grunt);
   require('load-grunt-tasks')(grunt);
 
-  var reloadPort = 35729, files;
+  var reloadPort = 35729;
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -31,46 +25,36 @@ module.exports = function (grunt) {
       spec: [ 'test/spec' ],
       integration: [ 'test/integration' ]
     },
+    copy: {
+      angularClient: {
+        files: [
+          { expand: true, cwd: '../dashup-angular-client/dist/', src: [ '**' ], dest: 'public/' },
+        ]
+      }
+    },
     watch: {
       options: {
-        nospawn: true,
-        livereload: reloadPort
+        livereload: reloadPort,
+        nospawn: true
       },
-      js: {
+      angularClient: {
+        files: [ '../dashup-angular-client/dist/**' ],
+        tasks: [ 'copy:angularClient' ]
+      },
+      server: {
         files: [
           'app.js',
           'app/**/*.js',
           'config/*.js'
         ],
-        tasks: ['develop', 'delayed-livereload']
+        tasks: [ 'develop' ]
       }
     }
   });
 
-  grunt.config.requires('watch.js.files');
-  files = grunt.config('watch.js.files');
-  files = grunt.file.expand(files);
-
-  grunt.registerTask('delayed-livereload', 'Live reload after the node server has restarted.', function () {
-    var done = this.async();
-
-    setTimeout(function () {
-      request.get('http://localhost:' + reloadPort + '/changed?files=' + files.join(','),  function(err, res) {
-        var reloaded = !err && res.statusCode === 200;
-        if (reloaded) {
-          grunt.log.ok('Delayed live reload successful.');
-        } else {
-          grunt.log.error('Unable to make a delayed live reload.');
-        }
-
-        done(reloaded);
-      });
-    }, 500);
-  });
-
   grunt.registerTask('test', [ 'jasmine_node' ]);
 
-  grunt.registerTask('serve', [ 'develop', 'watch' ]);
+  grunt.registerTask('serve', [ 'develop', 'watch:angularClient' ]);
 
   grunt.registerTask('default', [ 'test' ]);
 };
