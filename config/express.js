@@ -1,17 +1,30 @@
 var express = require('express');
 
 module.exports = function(app, config) {
-  
+
+  app.configure('development', function() {
+    app.use(express.logger('dev'));
+
+    app.use(require('connect-livereload')());
+
+    // disable script caching
+    app.use(function noCache(req, res, next) {
+      if (/\.js/.test(req.url)) {
+        res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.header('Pragma', 'no-cache');
+        res.header('Expires', 0);
+      }
+      next();
+    });
+
+    app.use(express.errorHandler());
+  });
+
   app.configure(function () {
-    
+
     app.set('port', config.port);
-    app.set('env', config.envname);
     app.set('hostname', config.hostname);
 
-    if (config.debug) {
-      app.use(express.logger('dev'));
-    }
-    
     // forward all requests to /s/:token to the /index.html page
 
     function redirectToIndex(pattern) {
@@ -29,7 +42,7 @@ module.exports = function(app, config) {
     app.use(redirectToIndex(/^\/about$/));
 
     app.use(express.static(config.root + '/public'));
-    app.use(express.favicon(config.root + '/public/img/favicon.ico'));
+    app.use(express.favicon(config.root + '/favicon.ico'));
 
     app.use(express.bodyParser());
     app.use(express.methodOverride());

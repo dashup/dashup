@@ -1,9 +1,8 @@
 module.exports = function (grunt) {
-  
+
   require('time-grunt')(grunt);
   require('load-grunt-tasks')(grunt);
 
-  var reloadPort = 35729;
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -25,36 +24,61 @@ module.exports = function (grunt) {
       spec: [ 'test/spec' ],
       integration: [ 'test/integration' ]
     },
+    open: {
+      server: {
+        url: 'http://localhost:<%= express.options.port %>'
+      }
+    },
+    express: {
+      options: {
+        port: process.env.PORT || 3000
+      },
+      dev: {
+        options: {
+          script: 'server.js',
+          debug: true
+        }
+      }
+    },
     copy: {
-      angularClient: {
+      client: {
         files: [
           { expand: true, cwd: '../dashup-angular-client/dist/', src: [ '**' ], dest: 'public/' },
         ]
       }
     },
     watch: {
-      options: {
-        livereload: reloadPort,
-        nospawn: true
-      },
-      angularClient: {
-        files: [ '../dashup-angular-client/dist/**' ],
-        tasks: [ 'copy:angularClient' ]
-      },
-      server: {
+      livereload: {
         files: [
-          'app.js',
-          'app/**/*.js',
+          'lib/views/**/*',
+          'public/**/*'
+        ],
+        options: {
+          livereload: true
+        }
+      },
+      client: {
+        files: [ '../dashup-angular-client/dist/**' ],
+        tasks: [ 'copy:client' ]
+      },
+      express: {
+        files: [
+          'server.js',
+          'lib/**/*.js',
           'config/*.js'
         ],
-        tasks: [ 'develop' ]
+        tasks: [ 'express:dev' ],
+        options: {
+          livereload: true,
+          nospawn: true
+        }
       }
     }
   });
 
   grunt.registerTask('test', [ 'jasmine_node' ]);
 
-  grunt.registerTask('serve', [ 'develop', 'watch:angularClient' ]);
+  grunt.registerTask('serve', [ 'express:dev', 'open', 'watch' ]);
 
   grunt.registerTask('default', [ 'test' ]);
 };
