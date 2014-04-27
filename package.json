@@ -43,7 +43,17 @@
     "lodash": "~2.4.0",
     "elasticsearch": "~2.1.0",
     "minimatch": "~0.2.0",
-    "express": "~3.3.0",
-    "moment": "~2.6.0"
+    "moment": "~2.6.0",
+    "sequelize": "~1.7.0",
+    "mysql": "~2.1.1",
+    "express": "~4.1.0",
+    "cookie-parser": "~1.0.1",
+    "express-session": "~1.0.3",
+    "body-parser": "~1.0.2",
+    "method-override": "~1.0.0",
+    "morgan": "~1.0.0",
+    "static-favicon": "~1.0.2",
+    "errorhandler": "~1.0.0",
+    "async": "~0.7.0"
   }
 }

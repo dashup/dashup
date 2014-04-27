@@ -1,16 +1,20 @@
-var express = require('express'),
-    config = require('./config/environment'),
-    utils = require('./lib/utils');
-
+'use strict';
 
 // initialize node env
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 
+var express = require('express'),
+    config = require('./lib/config'),
+    utils = require('./lib/utils');
+
+
+var db = require('./lib/db');
+
 var app = express();
 
-require('./config/express')(app, config);
-require('./config/routes')(app);
+require('./lib/config/express')(app, config);
+require('./lib/config/routes')(app);
 
 
 app.listen(app.get('port'), app.get('hostname'), function() {
@@ -21,6 +25,14 @@ app.listen(app.get('port'), app.get('hostname'), function() {
     app.get('env'));
 });
 
+
+if (config.db.sync) {
+
+  // sync database
+  db.sync().success(function() {
+    require('./lib/config/dummydata')(db);
+  });
+}
 
 // expose app
 
