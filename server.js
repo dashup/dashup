@@ -34,6 +34,11 @@ if (config.db.sync) {
   });
 }
 
+
+// init jobs
+require('./lib/config/jobs')(db);
+
+
 // expose app
 
 module.exports = app;
