@@ -27,7 +27,6 @@
   "homepage": "https://github.com/dashup/dashup",
   "devDependencies": {
     "grunt": "~0.4.0",
-    "grunt-develop": "~0.2.0",
     "grunt-contrib-watch": "~0.5.0",
     "grunt-jasmine-node": "~0.2.0",
     "grunt-contrib-copy": "~0.5.0",

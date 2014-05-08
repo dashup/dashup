@@ -6,11 +6,6 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    develop: {
-      server: {
-        file: 'app.js'
-      }
-    },
     jasmine_node: {
       options: {
         specNameMatcher: '.*Spec',
